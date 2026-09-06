@@ -12,7 +12,7 @@ import threading
 import webbrowser
 from datetime import datetime, timezone
 from pathlib import Path
-from tkinter import filedialog
+from tkinter import TclError, filedialog
 
 import customtkinter as ctk
 from PIL import Image, ImageDraw, ImageFont
@@ -390,8 +390,8 @@ class FaceChainApp(ctk.CTk):
                 border_color=COLORS["success"], fg_color=COLORS["drop_hover"]))
             self.drop_zone.dnd_bind("<<DragLeave>>", lambda e: self.drop_zone.configure(
                 border_color=COLORS["border"], fg_color=COLORS["drop_zone"]))
-        except ImportError:
-            # tkinterdnd2 not available — click-to-browse still works
+        except (ImportError, TclError):
+            # Drag-and-drop is optional; click-to-browse still works.
             pass
 
     def _on_drop(self, event):
@@ -722,7 +722,17 @@ class FaceChainApp(ctk.CTk):
             self._update_step(0, "active", "Detecting face…")
             self._update_time("Running Step 1 of 3…")
 
-            from face_encoder import detect_and_encode, NoFaceDetectedError
+            try:
+                from face_encoder import detect_and_encode, NoFaceDetectedError
+            except ModuleNotFoundError as exc:
+                self._update_step(0, "error", "Dependency missing")
+                self._pipeline_error(
+                    "Face Recognition Unavailable",
+                    f"Missing dependency: {exc.name}\n\n"
+                    "face_recognition requires dlib. Install it with "
+                    "Python 3.12 or earlier and the Windows C++ build tools.",
+                )
+                return
             try:
                 face_result = detect_and_encode(self._selected_image_path)
             except NoFaceDetectedError as exc:
