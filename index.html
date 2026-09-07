@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0e0d" />
+    <meta name="description" content="FaceChain creates a privacy-preserving biometric fingerprint, finds public visual matches, and anchors the proof on Polygon." />
+    <meta property="og:title" content="FaceChain | Biometric provenance on Polygon" />
+    <meta property="og:description" content="Turn a face into a verifiable, tamper-evident provenance record." />
+    <title>FaceChain | Biometric provenance on Polygon</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="FaceChain home">
+        <span class="brand-mark" aria-hidden="true">FC</span>
+        <span>FaceChain</span>
+      </a>
+      <div class="header-meta">
+        <span>Polygon Amoy</span>
+        <span class="network-state"><i aria-hidden="true"></i> Network ready</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div class="intro-copy">
+          <p class="eyebrow">Identity provenance for the open web</p>
+          <h1 id="page-title">A face becomes<br /><em>verifiable evidence.</em></h1>
+          <p class="lede">Detect a face, trace its public footprint, and anchor the result on-chain.</p>
+        </div>
+        <div class="proof-statement">
+          <span>Privacy first</span>
+          <strong>Raw biometric data never leaves your browser.</strong>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Face verification workspace">
+        <div class="capture-column">
+          <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-describedby="upload-help">
+            <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+            <div id="empty-state" class="empty-state">
+              <span class="upload-glyph" aria-hidden="true">+</span>
+              <h2>Choose a face image</h2>
+              <p id="upload-help">Drop a JPG, PNG, or WebP here, or select a file.</p>
+              <button id="browse-button" class="secondary-button" type="button">Select image</button>
+            </div>
+            <div id="preview-state" class="preview-state" hidden>
+              <img id="preview" alt="Selected face for verification" />
+              <div class="scan-frame" aria-hidden="true"><span></span></div>
+              <button id="replace-button" class="replace-button" type="button">Replace image</button>
+            </div>
+          </div>
+          <p id="file-meta" class="file-meta">No image selected</p>
+        </div>
+
+        <div class="process-column">
+          <div class="process-heading">
+            <span>Verification sequence</span>
+            <span id="model-status">Loading local encoder</span>
+          </div>
+
+          <ol class="pipeline">
+            <li class="pipeline-item" data-step="encode">
+              <span class="pipeline-index">A</span>
+              <div><strong>Encode locally</strong><p>Generate a 128-dimensional face descriptor in this browser.</p></div>
+              <span class="step-state">Waiting</span>
+            </li>
+            <li class="pipeline-item" data-step="search">
+              <span class="pipeline-index">B</span>
+              <div><strong>Trace the open web</strong><p>Query live Google Lens visual matches through SerpAPI.</p></div>
+              <span class="step-state">Waiting</span>
+            </li>
+            <li class="pipeline-item" data-step="record">
+              <span class="pipeline-index">C</span>
+              <div><strong>Anchor the proof</strong><p>Write the fingerprint and source to Polygon Amoy.</p></div>
+              <span class="step-state">Waiting</span>
+            </li>
+          </ol>
+
+          <div id="error-box" class="error-box" role="alert" hidden></div>
+          <button id="verify-button" class="primary-button" type="button" disabled>
+            <span>Run verification</span><span aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="results" class="results" aria-labelledby="results-title" hidden>
+        <div class="results-heading">
+          <div><span class="result-kicker">Verification complete</span><h2 id="results-title">Tamper-evident proof created.</h2></div>
+          <span id="completed-at" class="completed-at"></span>
+        </div>
+        <div class="result-grid">
+          <article class="result-primary">
+            <span>Biometric fingerprint</span>
+            <code id="face-hash"></code>
+            <button class="text-button" data-copy="face-hash" type="button">Copy fingerprint</button>
+          </article>
+          <article class="result-source">
+            <span>Strongest public match</span>
+            <h3 id="match-title"></h3>
+            <a id="match-link" target="_blank" rel="noopener noreferrer"></a>
+          </article>
+          <article class="result-chain">
+            <span>Polygon proof</span>
+            <dl>
+              <div><dt>Record</dt><dd id="record-id"></dd></div>
+              <div><dt>Block</dt><dd id="block-number"></dd></div>
+              <div><dt>Transaction</dt><dd id="tx-short"></dd></div>
+            </dl>
+            <a id="explorer-link" class="secondary-button" target="_blank" rel="noopener noreferrer">View on Polygonscan</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="principle">
+        <p>FaceChain stores the proof, not the person.</p>
+        <div><span>01</span> Descriptor created on-device</div>
+        <div><span>02</span> Only its SHA-256 fingerprint is recorded</div>
+        <div><span>03</span> Every proof stays independently auditable</div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Built for Hacker House Goa</span>
+      <span>Face ID + open-web intelligence + Polygon</span>
+    </footer>
+  </body>
+</html>

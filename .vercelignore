@@ -1,0 +1,10 @@
+# Desktop-only Python application. The web implementation lives in index.html,
+# app.js, styles.css, and api/.
+*.py
+requirements.txt
+contract/
+.venv/
+__pycache__/
+.env
+.env.*
+README.md

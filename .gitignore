@@ -32,3 +32,8 @@ env/
 
 # ─── Generated Artifacts ─────────────────────────────
 contract/FaceRecord_abi.json
+
+# ─── Web / Vercel ────────────────────────────────────
+node_modules/
+.vercel/
+.env.local
